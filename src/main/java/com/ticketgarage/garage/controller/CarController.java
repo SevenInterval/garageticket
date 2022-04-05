@@ -22,9 +22,13 @@ public class CarController {
     private CarService carService;
 
     @PostMapping(value = "/park", produces = "application/json")
-    public ResponseEntity<BaseResponse> parkCar(@Valid @RequestBody Car car) throws CarException {
-        String parkServiceMessage = carService.parkCar(car);
-        return new ResponseEntity<>(new ParkResponse(ResponseStatusType.SUCCESS, parkServiceMessage), HttpStatus.CREATED);
+    public ResponseEntity<BaseResponse> parkCar(@Valid @RequestBody Car car) {
+        try {
+            String parkMessage = carService.parkCar(car);
+            return new ResponseEntity<>(new ParkResponse(ResponseStatusType.SUCCESS, parkMessage), HttpStatus.CREATED);
+        } catch (CarException e) {
+            return new ResponseEntity<>(new BaseResponse(ResponseStatusType.FAIL,e.getErrorMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(value = "/status", produces = "application/json")

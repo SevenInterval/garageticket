@@ -7,8 +7,12 @@ public class ParkResponse extends BaseResponse {
     private String parkMessage;
 
     public ParkResponse(ResponseStatusType responseStatus, String parkMessage) {
-        super(responseStatus, parkMessage);
+        super(responseStatus);
         this.parkMessage = parkMessage;
+    }
+
+    public ParkResponse(String errorMessage, ResponseStatusType responseStatus) {
+        super(responseStatus, errorMessage);
     }
 
     public String getParkMessage() {

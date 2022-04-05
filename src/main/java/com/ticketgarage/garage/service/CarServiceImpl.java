@@ -24,6 +24,7 @@ public class CarServiceImpl implements CarService {
     private final CarValidator carValidator;
     private final TicketCreator ticketCreator;
     private final SlotHelper slotHelper;
+    String garageListString = "";
 
     public CarServiceImpl(CarRepository carRepository, GarageRepository garageRepository, CarValidator carValidator, TicketCreator ticketCreator, SlotHelper slotHelper) {
         this.carRepository = carRepository;
@@ -62,7 +63,11 @@ public class CarServiceImpl implements CarService {
         List<Car> carList = carRepository.findCarsByStatus(Status.INSIDE);
         List<String> carMessageList = new ArrayList<>();
         carList.forEach(item -> {
-            String responseMessage = item.getPlate() + " " + item.getColour() + " " + item.getGarageList();
+            String responseMessage = item.getPlate() + " " + item.getColour() + "  ";
+            item.getGarageList().forEach(garage -> {
+                garageListString += garage.getSlot();
+            });
+            responseMessage += "[" + garageListString + "]";
             carMessageList.add(responseMessage);
         });
         return carMessageList;
