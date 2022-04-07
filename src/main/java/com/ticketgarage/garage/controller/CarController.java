@@ -2,6 +2,7 @@ package com.ticketgarage.garage.controller;
 
 import com.ticketgarage.garage.model.Car;
 import com.ticketgarage.garage.service.CarService;
+import com.ticketgarage.garage.service.input.LeaveCar;
 import com.ticketgarage.garage.service.output.BaseResponse;
 import com.ticketgarage.garage.service.output.ParkResponse;
 import com.ticketgarage.garage.service.output.StatusResponse;
@@ -28,6 +29,16 @@ public class CarController {
             return new ResponseEntity<>(new ParkResponse(ResponseStatusType.SUCCESS, parkMessage), HttpStatus.CREATED);
         } catch (CarException e) {
             return new ResponseEntity<>(new BaseResponse(ResponseStatusType.FAIL,e.getErrorMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "/leave", produces = "application/json")
+    public ResponseEntity<BaseResponse> leaveCar(@Valid @RequestBody LeaveCar leaveCar) {
+        try {
+            String leaveMessage = carService.leaveCar(leaveCar.getTicket());
+            return new ResponseEntity<>(new ParkResponse(ResponseStatusType.SUCCESS, leaveMessage), HttpStatus.OK);
+        } catch (CarException e) {
+            return new ResponseEntity<>(new BaseResponse(ResponseStatusType.FAIL, e.getErrorMessage()), HttpStatus.BAD_REQUEST);
         }
     }
 

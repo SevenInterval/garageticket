@@ -8,6 +8,6 @@ import java.util.List;
 public interface CarService {
 
     String parkCar(Car car) throws CarException;
-    void leaveCar(String ticket);
+    String leaveCar(String ticket) throws CarException;
     List<String> statusCars() throws CarException;
 }

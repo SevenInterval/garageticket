@@ -54,7 +54,17 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void leaveCar(String ticket) {
+    public String leaveCar(String ticket) throws CarException {
+        Car leavingCar = carRepository.findByStatusAndTicket(Status.INSIDE, ticket);
+        if(leavingCar != null) {
+            leavingCar.setGarageList(null);
+            leavingCar.setStatus(Status.OUTSIDE);
+            leavingCar.setTicket(null);
+            carRepository.save(leavingCar);
+            return "Leave " + ticket;
+        } else {
+            throw new CarException("Car is not found in the garage!");
+        }
 
     }
 
@@ -65,7 +75,7 @@ public class CarServiceImpl implements CarService {
         carList.forEach(item -> {
             String responseMessage = item.getPlate() + " " + item.getColour() + "  ";
             item.getGarageList().forEach(garage -> {
-                garageListString += garage.getSlot();
+                garageListString += garage.getSlot() + ",";
             });
             responseMessage += "[" + garageListString + "]";
             carMessageList.add(responseMessage);

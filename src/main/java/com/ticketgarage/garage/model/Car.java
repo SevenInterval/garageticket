@@ -18,7 +18,7 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Column(name = "plate", length = 20, unique = true)
+    @Column(name = "plate", length = 20)
     @NotNull(message = "Plate can not be empty!")
     private String plate;
 
